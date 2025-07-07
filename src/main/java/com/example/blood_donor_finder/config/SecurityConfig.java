@@ -30,14 +30,14 @@ public class SecurityConfig {
                         .requestMatchers("/public/**")
                         .permitAll()
                         .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login.html")
-                        .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/home.html")
-                        .failureUrl("/login?error=true")
-                        .permitAll()
                 );
+//                .formLogin(form -> form
+//                        .loginPage("/login.html")
+//                        .loginProcessingUrl("/login")
+//                        .defaultSuccessUrl("/home.html")
+//                        .failureUrl("/login?error=true")
+//                        .permitAll()
+//                );
         return http.build();
     }
     @Bean
@@ -51,10 +51,6 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
-    }
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
     }
 
 }
