@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RaktaKhoj | Be a Hero, Donate Blood</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <style>
+        .bg-hero {
+          background-image:
+            linear-gradient(rgba(156, 0, 6, 0.65), rgba(90, 0, 3, 0.85)),
+            url('https://t3.ftcdn.net/jpg/03/60/19/34/360_F_360193480_kiF7OU7k3YUhAADbLQzobEFwgOeejHZJ.jpg');
+          background-size: cover;
+          background-position: center;
+        }
+        .fade-in {
+          animation: fadeInUp 1.2s ease forwards;
+          opacity: 0;
+          transform: translateY(20px);
+          animation-delay: var(--delay, 0s);
+        }
+        @keyframes fadeInUp {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        nav {
+          background: rgba(255 0 0 / 0.75);
+          backdrop-filter: blur(8px);
+        }
+        .floating {
+          animation: float 3s ease-in-out infinite;
+          transform-origin: center;
+          display: inline-block;
+        }
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+        .gradient-text {
+          background: linear-gradient(90deg, #ff0000, #ff4c4c);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        .neumorph-btn {
+          background: #e63946;
+          border-radius: 12px;
+          box-shadow: 8px 8px 15px #a62632, -8px -8px 15px #ff5e5e;
+          transition: all 0.3s ease;
+        }
+        .neumorph-btn:hover {
+          box-shadow: inset 8px 8px 15px #a62632, inset -8px -8px 15px #ff5e5e;
+          transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen font-sans bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900">
+
+<!-- Navbar -->
+<nav class="fixed w-full z-30 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center px-6 py-4">
+        <a href="#" class="flex items-center space-x-4 select-none">
+            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex justify-center items-center text-red-700 font-extrabold text-2xl md:text-3xl floating">🩸</div>
+            <span class="text-white font-extrabold text-2xl md:text-3xl tracking-wide">RaktaKhoj</span>
+        </a>
+
+        <div class="hidden md:flex space-x-10 font-semibold text-white text-lg">
+            <a href="donate.html" class="nav-link hover:text-red-300 transition">Donate</a>
+            <a href="search-blood.html" class="nav-link hover:text-red-300 transition">Search Blood</a>
+            <a href="profile.html" class="nav-link hover:text-red-300 transition">View My Profile</a>
+            <a href="/logout" class="nav-link hover:text-red-300 transition">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="bg-hero flex-grow flex flex-col justify-center items-center text-center px-6 md:px-0 pt-36">
+    <div class="max-w-4xl text-white relative z-10 py-40 md:py-48">
+        <h1 class="text-6xl md:text-8xl font-extrabold mb-6 fade-in gradient-text" style="--delay: 0s">
+            Be a Hero, Donate Blood
+        </h1>
+
+        <!-- Welcome Message -->
+        <p class="text-lg md:text-2xl mb-6 font-semibold fade-in text-yellow-300" style="--delay: 0.2s"
+           th:if="${username != null}">
+            Welcome, <span th:text="${username}">User</span>!
+        </p>
+
+        <p class="text-xl md:text-3xl mb-10 font-semibold tracking-wide fade-in" style="--delay: 0.3s">
+            Your single drop can save someone’s world.
+        </p>
+
+        <a href="donate.html" class="neumorph-btn text-white text-xl font-semibold py-5 px-14 rounded-full shadow-lg fade-in" style="--delay: 0.6s">
+            Donate Now
+        </a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-red-900 text-white text-center py-8 mt-auto font-semibold tracking-wide select-none">
+    <p>&copy; 2024 RaktaKhoj. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
