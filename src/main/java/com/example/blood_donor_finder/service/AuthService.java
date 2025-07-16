@@ -3,20 +3,20 @@ package com.example.blood_donor_finder.service;
 import com.example.blood_donor_finder.dto.UserRegisterDTO;
 import com.example.blood_donor_finder.dto.UserResponseDTO;
 import com.example.blood_donor_finder.entity.User;
-import com.example.blood_donor_finder.repository.UserRepository;
+import com.example.blood_donor_finder.repository.AuthRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
-    private final UserRepository userRepository;
+public class AuthService {
+    private final AuthRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder){
+    public AuthService(AuthRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;

@@ -1,55 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Register | Blood Donor Finder</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-blue-100 via-white to-red-100 min-h-screen flex items-center justify-center">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | Blood Donor Finder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-<div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-    <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Register</h2>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #bfdbfe, #ffffff, #fecaca);
+    }
+
+    .register-card {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .register-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .register-btn {
+      background-color: #3b82f6;
+    }
+
+    .register-btn:hover {
+      background-color: #2563eb;
+    }
+
+    .transition-input {
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .message {
+      font-weight: 500;
+      animation: fade-in 0.4s ease-in-out;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+  <div class="bg-white p-8 rounded-2xl register-card w-full max-w-md">
+    <h2 class="text-3xl font-bold text-center text-rose-600 mb-6">Register</h2>
 
     <form id="registerForm" class="space-y-5">
-        <div>
-            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-            <input type="text" id="username" name="username" required
-                   class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
+      <div>
+        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          required
+          class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-400 transition-input"
+        />
+      </div>
 
-        <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" id="email" name="email" required
-                   class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-400 transition-input"
+        />
+      </div>
 
-        <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <input type="password" id="password" name="password" required
-                   class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-400 transition-input"
+        />
+      </div>
 
-        <button type="submit"
-                class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-xl transition duration-300">
-            Register
-        </button>
+      <button
+        type="submit"
+        class="w-full register-btn text-white font-semibold py-2 rounded-xl transition duration-300" style="background-color: rgb(232, 17, 17);"
+      >
+        Register
+      </button>
     </form>
 
-    <div class="mt-6 text-center text-sm text-gray-600">
-        Already have an account?
-        <a href="/login.html" class="text-blue-500 font-medium hover:underline">Login here</a>
-    </div>
-</div>
+    <div id="messageBox" class="text-center text-sm mt-4 message hidden"></div>
 
-<script>
-    document.getElementById('registerForm').addEventListener('submit', async function(event) {
+    <div class="mt-6 text-center text-sm text-gray-600">
+      Already have an account?
+      <a href="login.html" class="text-red-500 font-medium hover:underline">Login here</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const msgBox = document.getElementById('messageBox');
+
+    form.addEventListener('submit', async function(event) {
       event.preventDefault();
 
       const data = {
-        username: document.getElementById('username').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        password: document.getElementById('password').value
+        username: form.username.value.trim(),
+        email: form.email.value.trim(),
+        password: form.password.value,
       };
 
       try {
@@ -60,16 +120,23 @@
         });
 
         if (response.ok) {
-          alert('✅ Registration successful!');
-          this.reset();
+          msgBox.textContent = '✅ Registration successful!';
+          msgBox.classList.remove('hidden', 'text-red-600');
+          msgBox.classList.add('text-green-600');
+          form.reset();
         } else {
           const errorText = await response.text();
-          alert('❌ Registration failed: ' + errorText);
+          msgBox.textContent = '❌ Registration failed: ' + errorText;
+          msgBox.classList.remove('hidden', 'text-green-600');
+          msgBox.classList.add('text-red-600');
         }
       } catch (error) {
-        alert('❌ Error: ' + error.message);
+        msgBox.textContent = '❌ Error: ' + error.message;
+        msgBox.classList.remove('hidden', 'text-green-600');
+        msgBox.classList.add('text-red-600');
       }
     });
-</script>
+  </script>
+
 </body>
 </html>

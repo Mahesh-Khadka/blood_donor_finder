@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.authorization.SingleResultAuthorizationManager.permitAll;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -27,30 +29,35 @@ public class SecurityConfig {
         http
                 .csrf(csrf-> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/home.html", "/donation_form.html").hasRole("USER")
+                        .requestMatchers("/login", "/login.html", "/index.html", "/register.html", "/api/auth/register", "/css/**", "/js/**")
                         .permitAll()
                         .anyRequest().authenticated()
-                );
-//                .formLogin(form -> form
-//                        .loginPage("/login.html")
-//                        .loginProcessingUrl("/login")
-//                        .defaultSuccessUrl("/home.html")
-//                        .failureUrl("/login?error=true")
-//                        .permitAll()
-//                );
+                )
+                .formLogin(form -> form
+                        .loginPage("/login.html")
+                        .loginProcessingUrl("/login")
+                        .usernameParameter("username")
+                        .successHandler((request, response, authentication) -> {
+                            boolean isAdmin = authentication.getAuthorities().stream()
+                                    .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+                            if (isAdmin) {
+                                response.sendRedirect("/admin/dashboard.html");
+                            } else {
+                                response.sendRedirect("/home.html");
+                            }
+                        })
+                        
+                        .failureUrl("/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout.permitAll());
         return http.build();
     }
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
     }
 
 }

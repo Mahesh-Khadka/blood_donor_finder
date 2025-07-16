@@ -1,0 +1,131 @@
+
+.blood_group_select {
+  position: relative;
+  margin: 2rem auto;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 90%; 
+  max-width: 1000px;
+  justify-content: center;
+  background-color: #eedbdd;; 
+  z-index: 1;
+}
+
+
+.chose-option p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  padding-top: 10px;
+  text-decoration: underline;
+}
+
+.blood_group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.blood_group ul li a {
+  display: inline-block;
+  background-color: #f44336;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.blood_group ul li a:hover,
+.blood_group ul li a.active {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+
+.btn-find {
+  margin-top: 20px;
+  background-color: #b71c1c;
+  color: white;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 5px 15px rgba(183, 28, 28, 0.4);
+}
+
+.btn-find:hover {
+  background-color: #c62828;
+  transform: translateY(-2px);
+}
+
+.resp {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #d32f2f;
+}
+
+.regd-pan {
+  margin-top: 25px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.regd-pan p {
+  margin-bottom: 15px;
+}
+
+.regd-pan a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000000;
+  padding: 10px 20px;
+  border: 2px solid #b71c1c;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.regd-pan a:hover {
+  background-color: #b71c1c;
+  color: #fff;
+} 
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .blood_group_select {
+    flex-direction: column;
+    padding: 30px 20px;
+    text-align: center;
+  }
+
+  .blood_group ul {
+    justify-content: center;
+  }
+
+  .chose-option p {
+    font-size: 1.2rem;
+  }
+
+  .btn-find {
+    width: 100%;
+  }
+} 
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Manage Donors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- Navbar -->
+<nav class="bg-red-600 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Manage Donors</h1>
+    <a href="/admin/dashboard.html" class="bg-white text-red-600 px-4 py-2 rounded hover:bg-red-100">Back</a>
+</nav>
+
+<div class="max-w-6xl mx-auto mt-10 px-4">
+    <!-- Search Form -->
+    <div class="flex flex-wrap gap-4 mb-6">
+        <input type="text" id="bloodGroup" placeholder="Blood Group" class="p-2 rounded border w-1/3" />
+        <input type="text" id="location" placeholder="Location" class="p-2 rounded border w-1/3" />
+        <button onclick="loadDonors()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Search</button>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white rounded-xl shadow-md">
+        <table class="min-w-full table-auto text-center">
+            <thead class="bg-red-100 text-red-700 uppercase text-sm">
+            <tr>
+                <th class="px-4 py-3">SN</th>
+                <th class="px-4 py-3">Name</th>
+                <th class="px-4 py-3">Blood Group</th>
+                <th class="px-4 py-3">Location</th>
+                <th class="px-4 py-3">Contact</th>
+                <th class="px-4 py-3">Approved</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="donorTable" class="text-gray-700">
+            <!-- Dynamic rows inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    async function loadDonors() {
+      const bloodGroup = document.getElementById('bloodGroup').value;
+      const location = document.getElementById('location').value;
+      const response = await fetch(`http://localhost:8082/api/donors?bloodGroup=${encodeURIComponent(bloodGroup)}&location=${encodeURIComponent(location)}`);
+      const donors = await response.json();
+
+      const tbody = document.getElementById('donorTable');
+      tbody.innerHTML = ""; // clear old rows
+
+      donors.forEach((donor, index) => {
+        const row = document.createElement('tr');
+        row.classList.add("border-t");
+
+        row.innerHTML = `
+          <td class="px-4 py-2">${index + 1}</td>
+          <td class="px-4 py-2">${donor.name}</td>
+          <td class="px-4 py-2 font-bold">${donor.bloodGroup}</td>
+          <td class="px-4 py-2">${donor.location}</td>
+          <td class="px-4 py-2">${donor.contact}</td>
+          <td class="px-4 py-2">${donor.approved ? 'Yes' : 'No'}</td>
+          <td class="px-4 py-2">
+            <button onclick="deleteDonor(${donor.id})" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm">
+              Delete
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    async function deleteDonor(id) {
+      if (!confirm("Are you sure you want to delete this donor?")) return;
+
+      const response = await fetch(`/api/donors/${id}`, { method: 'DELETE' });
+      if (response.ok) {
+        alert("Deleted successfully");
+        loadDonors(); // reload updated list
+      } else {
+        alert("Failed to delete");
+      }
+    }
+
+    // Load donors on page load
+    window.onload = loadDonors;
+</script>
+
+</body>
+</html>

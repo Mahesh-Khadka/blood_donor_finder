@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pending Approvals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+<h1 class="text-2xl font-bold mb-6 text-red-600">Pending Donor Approvals</h1>
+
+<div class="grid gap-6" id="pendingList">
+    <!-- Donors will be inserted here -->
+</div>
+
+<script>
+    async function loadPendingDonors() {
+      const res = await fetch("http://localhost:8082/api/donors/pending");
+      const donors = await res.json();
+      const list = document.getElementById("pendingList");
+      list.innerHTML = '';
+
+      if (donors.length === 0) {
+        list.innerHTML = `<div class="text-center text-gray-500">No pending donors.</div>`;
+        return;
+      }
+
+      donors.forEach(donor => {
+        const div = document.createElement("div");
+        div.className = "bg-white p-4 rounded-lg shadow flex flex-col md:flex-row gap-4";
+
+        div.innerHTML = `
+          <div class="w-full md:w-1/3">
+            <img src="/uploads/${donor.citizenshipPhotoPath}" alt="Citizenship" class="rounded shadow h-48 object-cover w-full">
+          </div>
+          <div class="flex-1">
+            <p><strong>Name:</strong> ${donor.name}</p>
+            <p><strong>Age:</strong> ${donor.age}</p>
+            <p><strong>Gender:</strong> ${donor.gender}</p>
+            <p><strong>Blood Group:</strong> ${donor.bloodGroup}</p>
+            <p><strong>Location:</strong> ${donor.location}</p>
+            <p><strong>Contact:</strong> ${donor.contact}</p>
+            <div class="mt-4 flex gap-2">
+              <button onclick="approve(${donor.id})" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Approve</button>
+              <button onclick="reject(${donor.id})" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Reject</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    async function approve(id) {
+      const res = await fetch(`http://localhost:8082/api/donors/approve/${id}`, {
+        method: "PUT"
+      });
+      if (res.ok) {
+        alert("Approved successfully");
+        loadPendingDonors();
+      }
+    }
+
+    async function reject(id) {
+      if (!confirm("Are you sure to reject/delete this donor?")) return;
+
+      const res = await fetch(`http://localhost:8082/api/donors/${id}`, {
+        method: "DELETE"
+      });
+      if (res.ok) {
+        alert("Rejected and deleted");
+        loadPendingDonors();
+      }
+    }
+
+    window.onload = loadPendingDonors;
+</script>
+
+</body>
+</html>

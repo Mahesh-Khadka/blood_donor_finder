@@ -1,7 +1,7 @@
 package com.example.blood_donor_finder.security;
 
 import com.example.blood_donor_finder.entity.User;
-import com.example.blood_donor_finder.repository.UserRepository;
+import com.example.blood_donor_finder.repository.AuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,10 +13,10 @@ import java.util.Collections;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private final  UserRepository userRepository;
+    private final AuthRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsService (UserRepository userRepository){
+    public CustomUserDetailsService (AuthRepository userRepository){
         this.userRepository = userRepository;
     }
     @Override
