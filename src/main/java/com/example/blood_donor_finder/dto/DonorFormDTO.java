@@ -1,9 +1,6 @@
 package com.example.blood_donor_finder.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -26,4 +23,7 @@ public class DonorFormDTO {
 
     @Pattern(regexp = "^98\\d{8}$", message = "Invalid Nepali contact number")
     private String contact;
+
+    @Email
+    private String email;
 }

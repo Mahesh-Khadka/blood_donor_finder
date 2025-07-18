@@ -34,12 +34,18 @@ public class DonorService {
     }
 
 
-    public void saveDonor(DonorFormDTO donorFormDTO, MultipartFile citizenshipPhoto) throws IOException{
-        String filename = System.currentTimeMillis()+"_"+citizenshipPhoto.getOriginalFilename();
+    public void saveDonor(DonorFormDTO donorFormDTO, MultipartFile citizenshipPhoto, String email) throws IOException {
+        if (donorRepository.existsByEmail(email)) {
+            throw new IllegalStateException("❌ You have already submitted the donor form with this Gmail.");
+        }
+
+        String filename = System.currentTimeMillis() + "_" + citizenshipPhoto.getOriginalFilename();
         Path filePath = uploadDir.resolve(filename);
         Files.copy(citizenshipPhoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
         Donor donor = modelMapper.map(donorFormDTO, Donor.class);
         donor.setCitizenshipPhotoPath(filename);
+        donor.setEmail(email); // Save the logged-in Gmail
         donorRepository.save(donor);
     }
 
@@ -64,6 +70,12 @@ public class DonorService {
         Donor donor = donorRepository.findById(id).orElseThrow();
         donor.setApproved(true);
         return donorRepository.save(donor);
+    }
+
+    public List<Donor> searchDonors(String bloodGroup, String location) {
+        if (bloodGroup != null && bloodGroup.trim().isEmpty()) bloodGroup = null;
+        if (location != null && location.trim().isEmpty()) location = null;
+        return donorRepository.searchDonors(bloodGroup, location);
     }
 
 }
