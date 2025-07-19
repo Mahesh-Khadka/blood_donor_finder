@@ -100,42 +100,46 @@
   </div>
 
   <script>
-    const form = document.getElementById('registerForm');
-    const msgBox = document.getElementById('messageBox');
+    const API_BASE_URL = window.location.hostname === "localhost"
+   ? "http://localhost:8082"
+   : "https://blood-donor-finder.onrender.com";
 
-    form.addEventListener('submit', async function(event) {
-      event.preventDefault();
+ const form = document.getElementById('registerForm');
+ const msgBox = document.getElementById('messageBox');
 
-      const data = {
-        username: form.username.value.trim(),
-        email: form.email.value.trim(),
-        password: form.password.value,
-      };
+ form.addEventListener('submit', async function(event) {
+   event.preventDefault();
 
-      try {
-        const response = await fetch('http://localhost:8082/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
+   const data = {
+     username: form.username.value.trim(),
+     email: form.email.value.trim(),
+     password: form.password.value,
+   };
 
-        if (response.ok) {
-          msgBox.textContent = '✅ Registration successful!';
-          msgBox.classList.remove('hidden', 'text-red-600');
-          msgBox.classList.add('text-green-600');
-          form.reset();
-        } else {
-          const errorText = await response.text();
-          msgBox.textContent = '❌ Registration failed: ' + errorText;
-          msgBox.classList.remove('hidden', 'text-green-600');
-          msgBox.classList.add('text-red-600');
-        }
-      } catch (error) {
-        msgBox.textContent = '❌ Error: ' + error.message;
-        msgBox.classList.remove('hidden', 'text-green-600');
-        msgBox.classList.add('text-red-600');
-      }
-    });
+   try {
+     const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify(data)
+     });
+
+     if (response.ok) {
+       msgBox.textContent = '✅ Registration successful!';
+       msgBox.classList.remove('hidden', 'text-red-600');
+       msgBox.classList.add('text-green-600');
+       form.reset();
+     } else {
+       const errorText = await response.text();
+       msgBox.textContent = '❌ Registration failed: ' + errorText;
+       msgBox.classList.remove('hidden', 'text-green-600');
+       msgBox.classList.add('text-red-600');
+     }
+   } catch (error) {
+     msgBox.textContent = '❌ Error: ' + error.message;
+     msgBox.classList.remove('hidden', 'text-green-600');
+     msgBox.classList.add('text-red-600');
+   }
+ });
   </script>
 
 </body>

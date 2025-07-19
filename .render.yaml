@@ -4,3 +4,9 @@ services:
     env: docker
     plan: free
     region: oregon
+              - key: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://your-remote-db-host:3306/blood_donor_finder?useSSL=false&serverTimezone=UTC
+                - key: SPRING_DATASOURCE_USERNAME
+                  value: root
+                - key: SPRING_DATASOURCE_PASSWORD
+                  value: MaHi@kHaDkA#7

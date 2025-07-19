@@ -97,28 +97,33 @@
 </main>
 
 <script>
+    // Dynamically set API base URL depending on environment
+    const API_BASE_URL = window.location.hostname === "localhost"
+      ? "http://localhost:8082"
+      : "https://blood-donor-finder.onrender.com";
+
     document.getElementById("donationForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
+      e.preventDefault();
 
-        const form = document.getElementById("donationForm");
-        const formData = new FormData(form);
+      const form = e.target;
+      const formData = new FormData(form);
 
-        try {
-            const response = await fetch("http://localhost:8082/api/donors/upload", {
-                method: "POST",
-                body: formData
-            });
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/donors/upload`, {
+          method: "POST",
+          body: formData
+        });
 
-            if (response.ok) {
-                alert("✅ Your information has been submitted with citizenship photo!");
-                form.reset();
-            } else {
-                const text = await response.text();
-                alert("❌ Submission failed: " + text);
-            }
-        } catch (error) {
-            alert("⚠️ Network error: " + error.message);
+        if (response.ok) {
+          alert("✅ Your information has been submitted with citizenship photo!");
+          form.reset();
+        } else {
+          const text = await response.text();
+          alert("❌ Submission failed: " + text);
         }
+      } catch (error) {
+        alert("⚠️ Network error: " + error.message);
+      }
     });
 </script>
 

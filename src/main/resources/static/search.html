@@ -39,45 +39,50 @@
 
 <script>
     const form = document.getElementById('searchForm');
-    const resultsDiv = document.getElementById('results');
+ const resultsDiv = document.getElementById('results');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      resultsDiv.innerHTML = 'Loading...';
+ const API_BASE_URL = window.location.hostname === "localhost"
+   ? "http://localhost:8082"
+   : "https://blood-donor-finder.onrender.com";
 
-      const bloodGroup = document.getElementById('bloodGroup').value;
-      const location = document.getElementById('location').value;
+ form.addEventListener('submit', async (e) => {
+   e.preventDefault();
+   resultsDiv.innerHTML = 'Loading...';
 
-      // Build query params
-      const params = new URLSearchParams();
-      if(bloodGroup) params.append('bloodGroup', bloodGroup);
-      if(location) params.append('location', location);
+   const bloodGroup = document.getElementById('bloodGroup').value;
+   const location = document.getElementById('location').value;
 
-      try {
-        const response = await fetch(`/api/donors/search?${params.toString()}`);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const donors = await response.json();
+   const params = new URLSearchParams();
+   if (bloodGroup) params.append('bloodGroup', bloodGroup);
+   if (location) params.append('location', location);
 
-        if (donors.length === 0) {
-          resultsDiv.innerHTML = '<p class="text-center text-gray-500">No donors found.</p>';
-          return;
-        }
-        resultsDiv.innerHTML = donors.map(donor => `
-       <div class="bg-white p-4 rounded shadow">
-    <h3 class="text-xl font-semibold text-red-700">${donor.name}</h3>
-    <p><strong>Blood Group:</strong> ${donor.bloodGroup}</p>
-    <p><strong>Location:</strong> ${donor.location}</p>
-    <p><strong>Phone:</strong> ${donor.contact || 'N/A'}</p>
-    <p><strong>Age:</strong> ${donor.age || 'N/A'}</p>
-    <p><strong>Gender:</strong> ${donor.gender || 'N/A'}</p>
-    <p><span class="text-green-600 font-semibold">Approved</span></p>
-  </div>
-`).join('');
+   try {
+     const response = await fetch(`${API_BASE_URL}/api/donors/search?${params.toString()}`);
+     if (!response.ok) throw new Error('Network response was not ok');
+     const donors = await response.json();
 
-      } catch (error) {
-        resultsDiv.innerHTML = `<p class="text-center text-red-600">Error fetching donors: ${error.message}</p>`;
-      }
-    });
+     if (donors.length === 0) {
+       resultsDiv.innerHTML = '<p class="text-center text-gray-500">No donors found.</p>';
+       return;
+     }
+
+     resultsDiv.innerHTML = donors.map(donor => `
+       <div class="bg-white p-4 rounded shadow mb-4">
+         <h3 class="text-xl font-semibold text-red-700">${donor.name}</h3>
+         <p><strong>Blood Group:</strong> ${donor.bloodGroup}</p>
+         <p><strong>Location:</strong> ${donor.location}</p>
+         <p><strong>Phone:</strong> ${donor.contact || 'N/A'}</p>
+         <p><strong>Age:</strong> ${donor.age || 'N/A'}</p>
+         <p><strong>Gender:</strong> ${donor.gender || 'N/A'}</p>
+         <p><span class="text-green-600 font-semibold">Approved</span></p>
+       </div>
+     `).join('');
+
+   } catch (error) {
+     resultsDiv.innerHTML = `<p class="text-center text-red-600">Error fetching donors: ${error.message}</p>`;
+   }
+ });
+
 </script>
 </body>
 </html>
