@@ -5,39 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Register | Blood Donor Finder</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     body {
       background: linear-gradient(to bottom right, #bfdbfe, #ffffff, #fecaca);
     }
-
     .register-card {
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
     .register-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
     }
-
     .register-btn {
-      background-color: #3b82f6;
+      background-color: #e81111;
     }
-
     .register-btn:hover {
-      background-color: #2563eb;
+      background-color: #b50d0d;
     }
-
     .transition-input {
       transition: border-color 0.3s, box-shadow 0.3s;
     }
-
     .message {
       font-weight: 500;
       animation: fade-in 0.4s ease-in-out;
     }
-
     @keyframes fade-in {
       from { opacity: 0; transform: translateY(-4px); }
       to { opacity: 1; transform: translateY(0); }
@@ -46,97 +38,159 @@
 </head>
 <body class="min-h-screen flex items-center justify-center">
 
-  <div class="bg-white p-8 rounded-2xl register-card w-full max-w-md">
-    <h2 class="text-3xl font-bold text-center text-rose-600 mb-6">Register</h2>
+<div class="bg-white p-8 rounded-2xl register-card w-full max-w-md">
+  <h2 class="text-3xl font-bold text-center text-rose-600 mb-6">Register</h2>
 
-    <form id="registerForm" class="space-y-5">
-      <div>
-        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          required
-          class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-400 transition-input"
-        />
-      </div>
-
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-400 transition-input"
-        />
-      </div>
-
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          required
-          class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-400 transition-input"
-        />
-      </div>
-
-      <button
-        type="submit"
-        class="w-full register-btn text-white font-semibold py-2 rounded-xl transition duration-300" style="background-color: rgb(232, 17, 17);"
-      >
-        Register
-      </button>
-    </form>
-
-    <div id="messageBox" class="text-center text-sm mt-4 message hidden"></div>
-
-    <div class="mt-6 text-center text-sm text-gray-600">
-      Already have an account?
-      <a href="login.html" class="text-red-500 font-medium hover:underline">Login here</a>
+  <form id="registerForm" class="space-y-5">
+    <!-- Username -->
+    <div>
+      <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+      <input type="text" id="username" name="username" required
+             class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-400 transition-input" />
+      <p class="text-sm text-red-500 mt-1 hidden" id="usernameError">Username must be 3-20 characters.</p>
     </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <input type="email" id="email" name="email" required
+             class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-400 transition-input" />
+      <p class="text-sm text-red-500 mt-1 hidden" id="emailError">Enter a valid email address.</p>
+    </div>
+
+    <!-- Password -->
+    <div class="relative">
+      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+      <input type="password" id="password" name="password" required
+             class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-400 transition-input pr-12" />
+      <button type="button" id="togglePassword"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+        Show
+      </button>
+      <p class="text-sm mt-1" id="passwordStrength">Password strength: <span class="font-semibold">-</span></p>
+      <p class="text-sm text-red-500 mt-1 hidden" id="passwordError">Password must be 6-20 characters.</p>
+    </div>
+
+    <button type="submit" class="w-full register-btn text-white font-semibold py-2 rounded-xl transition duration-300">
+      Register
+    </button>
+  </form>
+
+  <div id="messageBox" class="text-center text-sm mt-4 message hidden"></div>
+
+  <div class="mt-6 text-center text-sm text-gray-600">
+    Already have an account?
+    <a href="login.html" class="text-red-500 font-medium hover:underline">Login here</a>
   </div>
+</div>
 
-  <script>
-    const form = document.getElementById('registerForm');
-    const msgBox = document.getElementById('messageBox');
+<script>
+  const form = document.getElementById('registerForm');
+  const msgBox = document.getElementById('messageBox');
+  const usernameError = document.getElementById('usernameError');
+  const emailError = document.getElementById('emailError');
+  const passwordError = document.getElementById('passwordError');
+  const passwordInput = document.getElementById('password');
+  const passwordStrengthText = document.getElementById('passwordStrength');
+  const togglePasswordBtn = document.getElementById('togglePassword');
 
-    form.addEventListener('submit', async function(event) {
-      event.preventDefault();
+  // Show/hide password
+  togglePasswordBtn.addEventListener('click', () => {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      togglePasswordBtn.textContent = 'Hide';
+    } else {
+      passwordInput.type = 'password';
+      togglePasswordBtn.textContent = 'Show';
+    }
+  });
 
-      const data = {
-        username: form.username.value.trim(),
-        email: form.email.value.trim(),
-        password: form.password.value,
-      };
+  // Password strength checker
+  passwordInput.addEventListener('input', () => {
+    const val = passwordInput.value;
+    let strength = 'Weak';
+    let color = 'text-red-500';
 
-      try {
-        const response = await fetch('http://localhost:8082/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
+    if (val.length >= 6 && /[A-Z]/.test(val) && /[0-9]/.test(val) && /[^A-Za-z0-9]/.test(val)) {
+      strength = 'Strong';
+      color = 'text-green-600';
+    } else if (val.length >= 6 && ((/[A-Z]/.test(val) && /[0-9]/.test(val)) || (/[0-9]/.test(val) && /[^A-Za-z0-9]/.test(val)))) {
+      strength = 'Medium';
+      color = 'text-yellow-500';
+    }
 
-        if (response.ok) {
-          msgBox.textContent = '✅ Registration successful!';
-          msgBox.classList.remove('hidden', 'text-red-600');
-          msgBox.classList.add('text-green-600');
-          form.reset();
-        } else {
-          const errorText = await response.text();
-          msgBox.textContent = '❌ Registration failed: ' + errorText;
-          msgBox.classList.remove('hidden', 'text-green-600');
-          msgBox.classList.add('text-red-600');
-        }
-      } catch (error) {
-        msgBox.textContent = '❌ Error: ' + error.message;
+    passwordStrengthText.innerHTML = `Password strength: <span class="${color} font-semibold">${strength}</span>`;
+  });
+
+  // Form submission with validation
+  form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    // Reset errors
+    usernameError.classList.add('hidden');
+    emailError.classList.add('hidden');
+    passwordError.classList.add('hidden');
+    msgBox.classList.add('hidden');
+
+    const username = form.username.value.trim();
+    const email = form.email.value.trim();
+    const password = form.password.value;
+
+    let valid = true;
+
+    if (username.length < 3 || username.length > 20) {
+      usernameError.classList.remove('hidden');
+      valid = false;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      emailError.classList.remove('hidden');
+      valid = false;
+    }
+
+    if (password.length < 6 || password.length > 20) {
+      passwordError.classList.remove('hidden');
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    // Submit form
+    const data = { username, email, password };
+    const submitBtn = form.querySelector("button[type='submit']");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Registering...";
+
+    try {
+      const response = await fetch('http://localhost:8082/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        msgBox.textContent = '✅ Registration successful!';
+        msgBox.classList.remove('hidden', 'text-red-600');
+        msgBox.classList.add('text-green-600');
+        form.reset();
+        passwordStrengthText.innerHTML = `Password strength: <span class="font-semibold">-</span>`;
+      } else {
+        const errorText = await response.text();
+        msgBox.textContent = '❌ Registration failed: ' + errorText;
         msgBox.classList.remove('hidden', 'text-green-600');
         msgBox.classList.add('text-red-600');
       }
-    });
-  </script>
+    } catch (error) {
+      msgBox.textContent = '❌ Error: ' + error.message;
+      msgBox.classList.remove('hidden', 'text-green-600');
+      msgBox.classList.add('text-red-600');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Register";
+    }
+  });
+</script>
 
 </body>
 </html>

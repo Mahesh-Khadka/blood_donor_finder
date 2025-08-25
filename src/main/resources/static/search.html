@@ -2,16 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Find Blood Donors</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-<div class="max-w-3xl mx-auto bg-white p-6 rounded shadow-lg">
-    <h1 class="text-3xl font-bold text-red-600 mb-6 text-center">Find Blood Donors</h1>
+
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+    <h1 class="text-4xl font-bold text-red-600 mb-6 text-center">Find Blood Donors</h1>
+
     <form id="searchForm" class="space-y-4">
         <div>
             <label class="block font-semibold mb-1">Blood Group</label>
-            <select id="bloodGroup" name="bloodGroup" class="w-full p-2 border rounded">
+            <select id="bloodGroup" name="bloodGroup" class="w-full p-2 border rounded focus:ring-2 focus:ring-red-500">
                 <option value="">Any</option>
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
@@ -26,11 +29,14 @@
 
         <div>
             <label class="block font-semibold mb-1">Location</label>
-            <input type="text" id="location" name="location" placeholder="Enter location" class="w-full p-2 border rounded" />
+            <input type="text" id="location" name="location" placeholder="Enter city or hospital"
+                   class="w-full p-2 border rounded focus:ring-2 focus:ring-red-500" />
         </div>
 
         <div class="text-center">
-            <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700">Search</button>
+            <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition">
+                Search
+            </button>
         </div>
     </form>
 
@@ -42,42 +48,50 @@
     const resultsDiv = document.getElementById('results');
 
     form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      resultsDiv.innerHTML = 'Loading...';
+        e.preventDefault();
+        resultsDiv.innerHTML = `<div class="col-span-full text-center py-6">
+                                  <div class="inline-block w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                                </div>`;
 
-      const bloodGroup = document.getElementById('bloodGroup').value;
-      const location = document.getElementById('location').value;
+        const bloodGroup = document.getElementById('bloodGroup').value.trim();
+        const location = document.getElementById('location').value.trim();
 
-      // Build query params
-      const params = new URLSearchParams();
-      if(bloodGroup) params.append('bloodGroup', bloodGroup);
-      if(location) params.append('location', location);
-
-      try {
-        const response = await fetch(`/api/donors/search?${params.toString()}`);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const donors = await response.json();
-
-        if (donors.length === 0) {
-          resultsDiv.innerHTML = '<p class="text-center text-gray-500">No donors found.</p>';
-          return;
+        if (!bloodGroup && !location) {
+            resultsDiv.innerHTML = '<p class="text-center text-red-600">Please enter at least one filter.</p>';
+            return;
         }
-        resultsDiv.innerHTML = donors.map(donor => `
-       <div class="bg-white p-4 rounded shadow">
-    <h3 class="text-xl font-semibold text-red-700">${donor.name}</h3>
-    <p><strong>Blood Group:</strong> ${donor.bloodGroup}</p>
-    <p><strong>Location:</strong> ${donor.location}</p>
-    <p><strong>Phone:</strong> ${donor.contact || 'N/A'}</p>
-    <p><strong>Age:</strong> ${donor.age || 'N/A'}</p>
-    <p><strong>Gender:</strong> ${donor.gender || 'N/A'}</p>
-    <p><span class="text-green-600 font-semibold">Approved</span></p>
-  </div>
-`).join('');
 
-      } catch (error) {
-        resultsDiv.innerHTML = `<p class="text-center text-red-600">Error fetching donors: ${error.message}</p>`;
-      }
+        const params = new URLSearchParams();
+        if (bloodGroup) params.append('bloodGroup', bloodGroup);
+        if (location) params.append('location', location);
+
+        try {
+            const response = await fetch(`/api/donors/search?${params.toString()}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const donors = await response.json();
+
+            if (donors.length === 0) {
+                resultsDiv.innerHTML = '<p class="text-center text-gray-500 col-span-full">No donors found.</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = donors.map(donor => `
+              <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
+                <h3 class="text-xl font-semibold text-red-700 mb-2">${donor.name}</h3>
+                <p><strong>Blood Group:</strong> ${donor.bloodGroup}</p>
+                <p><strong>Location:</strong> ${donor.location}</p>
+                <p><strong>Phone:</strong> ${donor.contact || 'N/A'}</p>
+                <p><strong>Age:</strong> ${donor.age || 'N/A'}</p>
+                <p><strong>Gender:</strong> ${donor.gender || 'N/A'}</p>
+                <p class="mt-2"><span class="text-green-600 font-semibold">Approved</span></p>
+              </div>
+            `).join('');
+
+        } catch (error) {
+            resultsDiv.innerHTML = `<p class="text-center text-red-600 col-span-full">Error fetching donors: ${error.message}</p>`;
+        }
     });
 </script>
+
 </body>
 </html>
