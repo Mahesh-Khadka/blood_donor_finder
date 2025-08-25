@@ -9,36 +9,44 @@
 <body class="bg-gray-100 font-sans">
 
 <!-- Navbar -->
-<nav class="bg-red-600 text-white shadow-md p-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold">Blood Donor Finder - Admin Panel</h1>
-    <a href="/admin/logout.html" class="bg-white text-red-600 px-4 py-2 rounded hover:bg-red-100">Logout</a>
+<nav class="fixed top-0 left-0 right-0 bg-gradient-to-r from-red-600 to-pink-500 text-white shadow-md px-6 py-4 flex justify-between items-center z-50">
+    <div class="flex items-center space-x-3">
+        <img src="https://img.icons8.com/fluency/48/drop-of-blood.png" class="w-10" alt="Logo">
+        <h1 class="text-2xl font-bold tracking-wide">Blood Donor Finder - Admin Panel</h1>
+    </div>
+    <div class="flex items-center space-x-4">
+        <span class="hidden md:block font-medium">Welcome, Admin</span>
+        <img src="https://img.icons8.com/color/48/admin-settings-male.png" class="w-10 h-10 rounded-full border-2 border-white" alt="Admin">
+        <a href="/admin/logout.html" class="bg-white text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 font-medium transition">Logout</a>
+    </div>
 </nav>
 
 <!-- Dashboard Content -->
-<div class="max-w-6xl mx-auto mt-10 px-4">
+<div class="max-w-6xl mx-auto mt-28 px-4">
     <h2 class="text-3xl font-semibold text-center text-gray-800 mb-10">Welcome, Admin</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
         <!-- Manage Donors -->
-        <a href="/admin/manage-donors.html" class="bg-white rounded-2xl shadow hover:shadow-xl p-8 text-center transform hover:scale-105 transition">
-            <img src="https://img.icons8.com/color/96/conference-call.png" alt="Manage Donors" class="mx-auto mb-4 w-20" />
-            <h3 class="text-xl font-semibold text-gray-700">Manage Donors</h3>
-            <p class="text-gray-500 mt-2 text-sm">View, search, or delete donor records</p>
+        <a href="/admin/manage-donors.html" class="bg-gradient-to-br from-red-500 to-red-600 text-white rounded-3xl shadow-lg p-10 text-center transform hover:scale-105 hover:shadow-2xl transition">
+            <div class="flex justify-center mb-6">
+                <div class="bg-white/20 p-6 rounded-full">
+                    <img src="https://img.icons8.com/color/96/conference-call.png" alt="Manage Donors" class="w-24">
+                </div>
+            </div>
+            <h3 class="text-2xl font-semibold mb-2">Manage Donors</h3>
+            <p class="opacity-90">View, search, update, or delete donor records</p>
         </a>
 
         <!-- Approve Donors -->
-        <a href="/admin/pending-approvals.html" class="bg-white rounded-2xl shadow hover:shadow-xl p-8 text-center transform hover:scale-105 transition">
-            <img src="https://img.icons8.com/color/96/approval.png" alt="Approve Donors" class="mx-auto mb-4 w-20" />
-            <h3 class="text-xl font-semibold text-gray-700">Approve Donors</h3>
-            <p class="text-gray-500 mt-2 text-sm">Verify citizenship & approve/reject</p>
-        </a>
-
-        <!-- View Documents -->
-        <a href="/admin/view-documents.html" class="bg-white rounded-2xl shadow hover:shadow-xl p-8 text-center transform hover:scale-105 transition">
-            <img src="https://img.icons8.com/color/96/image-file.png" alt="View Documents" class="mx-auto mb-4 w-20" />
-            <h3 class="text-xl font-semibold text-gray-700">View Uploaded Files</h3>
-            <p class="text-gray-500 mt-2 text-sm">See submitted citizenship/photos</p>
+        <a href="/admin/pending-approvals.html" class="bg-gradient-to-br from-yellow-400 to-yellow-500 text-white rounded-3xl shadow-lg p-10 text-center transform hover:scale-105 hover:shadow-2xl transition">
+            <div class="flex justify-center mb-6">
+                <div class="bg-white/20 p-6 rounded-full">
+                    <img src="https://img.icons8.com/color/96/approval.png" alt="Approve Donors" class="w-24">
+                </div>
+            </div>
+            <h3 class="text-2xl font-semibold mb-2">Approve Donors</h3>
+            <p class="opacity-90">Verify citizenship & approve/reject pending donors</p>
         </a>
 
     </div>
