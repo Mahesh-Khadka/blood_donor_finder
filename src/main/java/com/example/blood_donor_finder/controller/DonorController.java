@@ -1,6 +1,7 @@
 package com.example.blood_donor_finder.controller;
 
 import com.example.blood_donor_finder.dto.DonorFormDTO;
+import com.example.blood_donor_finder.dto.DonorResponse;
 import com.example.blood_donor_finder.entity.Donor;
 import com.example.blood_donor_finder.service.DonorService;
 import jakarta.validation.Valid;
@@ -59,6 +60,7 @@ public class DonorController {
         return donorService.getDonors(bloodGroup, location);
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDonor(@PathVariable Long id) {
         boolean deleted = donorService.deleteDonor(id);
@@ -88,5 +90,32 @@ public class DonorController {
                                     @RequestParam(required = false) String location) {
         return donorService.searchDonors(bloodGroup, location);
     }
+    @GetMapping("/profile")
+    public ResponseEntity<DonorResponse> getProfile() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((UserDetails) auth.getPrincipal()).getUsername();
+
+        Donor donor = donorService.getDonorByEmail(email);
+        DonorResponse response = new DonorResponse(
+                donor.getId(),
+                donor.getName(),
+                donor.getBloodGroup(),
+                donor.getLocation(),
+                donor.getContact(),
+                donor.isApproved(),
+                null // no photo needed here
+        );
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody DonorFormDTO dto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((UserDetails) auth.getPrincipal()).getUsername();
+
+        donorService.updateProfile(email, dto);
+        return ResponseEntity.ok().build();
+    }
+
 
 }

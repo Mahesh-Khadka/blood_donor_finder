@@ -32,5 +32,7 @@ public class Donor {
     private boolean approved = false;
 
     private String email;
+    private String availability = "Available"; // default value
+
 
 }

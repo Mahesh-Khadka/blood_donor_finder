@@ -75,7 +75,19 @@ public class DonorService {
     public List<Donor> searchDonors(String bloodGroup, String location) {
         if (bloodGroup != null && bloodGroup.trim().isEmpty()) bloodGroup = null;
         if (location != null && location.trim().isEmpty()) location = null;
-        return donorRepository.searchDonors(bloodGroup, location);
+        return donorRepository.searchAvailableApprovedDonors(bloodGroup, location);
+    }
+
+    public Donor getDonorByEmail(String email) {
+        return donorRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Donor not found"));
+    }
+
+    public void updateProfile(String email, DonorFormDTO dto) {
+        Donor donor = getDonorByEmail(email);
+        donor.setContact(dto.getContact());
+        donor.setAvailability(dto.getAvailability());
+        donorRepository.save(donor);
     }
 
 }

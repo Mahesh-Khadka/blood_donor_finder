@@ -26,4 +26,6 @@ public class DonorFormDTO {
 
     @Email
     private String email;
+    private String availability = "Available";
+
 }
