@@ -99,11 +99,12 @@ public class DonorController {
         DonorResponse response = new DonorResponse(
                 donor.getId(),
                 donor.getName(),
+                donor.getEmail(),
                 donor.getBloodGroup(),
                 donor.getLocation(),
                 donor.getContact(),
                 donor.isApproved(),
-                null // no photo needed here
+                donor.getAvailability()
         );
         return ResponseEntity.ok(response);
     }
