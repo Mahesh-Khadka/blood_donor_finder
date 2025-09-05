@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>RaktaKhoj | Be a Hero, Donate Blood</title>
+    <title>Blood Donor Finder| Be a Hero, Donate Blood</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
     <style>
         .bg-hero {
@@ -65,9 +65,12 @@
 <nav class="fixed w-full z-30 shadow-lg">
     <div class="container mx-auto flex justify-between items-center px-6 py-4">
         <a href="#" class="flex items-center space-x-4 select-none">
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex justify-center items-center text-red-700 font-extrabold text-2xl md:text-3xl floating">🩸</div>
-            <span class="text-white font-extrabold text-2xl md:text-3xl tracking-wide">Blood Donor Finder</span>
-        </a>
+        <!-- Logo Circle with Image -->
+        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex justify-center items-center overflow-hidden">
+            <img src="/images/logo.png" alt="Blood Donor Finder Logo" class="w-8 h-8 md:w-10 md:h-10 object-contain" />
+        </div>
+        <span class="text-white logo-font text-3xl md:text-4xl tracking-wide">Blood Donor Finder</span>
+    </a>
 
         <div class="hidden md:flex space-x-10 font-semibold text-white text-lg">
             <a href="donation_form.html" class="nav-link hover:text-red-300 transition">Donate</a>
