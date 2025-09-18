@@ -37,22 +37,18 @@ Here’s the structure of the Blood Donor Finder project:
    cd blood-donor-finder
 
 2. Backend Setup
-    Install Java (JDK 17+) and Maven.
-
-    Navigate to blood_donor_finder:
-    mvn spring-boot:run
+- Install Java (JDK 17+) and Maven.
+- Navigate to the project folder (if not already there) and run the Spring Boot application:
+     mvn spring-boot:run
 
 3. Database Setup
+- Install MySQL.
+- Create a database:
+ 
+CREATE DATABASE blood_donor_finder;
 
-    Install MySQL.
-
-    Create a database:
-
-    CREATE DATABASE blood_donor_finder;
-
-Update application.properties with your DB username & password.
-
-Run the project to auto-create tables.
+- Open backend/src/main/resources/application.properties and update your database username and password.
+- Run the backend project; Spring Boot will automatically create the necessary tables.
 
 4. Frontend Setup
 
