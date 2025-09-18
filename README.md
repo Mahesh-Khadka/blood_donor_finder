@@ -1,10 +1,10 @@
-🩸 Blood Donor Finder
+## 🩸 Blood Donor Finder
 A web-based application to connect blood donors and recipients quickly and efficiently. 
 This project aims to simplify the process of finding compatible blood donors in urgent 
 situations by providing a centralized platform for registration, search, and management.
 
 
-🚀 Features
+## 🚀 Features
 i. 🔐 User Authentication – Secure login & registration using Session based authentication.
 
 ii. 👤 Donor Registration – Donors can register with their details (name, blood group, location, contact info).
@@ -18,13 +18,20 @@ v. 🛡 Backend Security – Protected APIs with Spring Boot.
 vi. 💾 Database Integration – Donor and user data stored securely in MySQL.
 
 
-🛠 Tech Stack
+## 🛠 Tech Stack
 Frontend: HTML, Tailwind CSS
 Backend: Java, Spring Boot
 Database: MySQL
 Authentication: Session based
 
-⚙️ Installation & Setup
+## 📂 Project Structure
+
+Here’s the structure of the Blood Donor Finder project:
+
+![Project Structure](assets/project-structure.png)
+
+
+## ⚙️ Installation & Setup
 1. Clone the Repository
    git clone https://github.com/your-username/blood-donor-finder.git
    cd blood-donor-finder
@@ -51,27 +58,36 @@ Run the project to auto-create tables.
 
  Open frontend/index.html in your browser.
  
-##Screenshots
+## Screenshots
 
 **LoginPage**
-![Login Page](images/LoginForm.png)
+![Login Page](assets/LoginForm.png)
 
 **IndexPage**
-![Index Page](images/Indexpage.png)
+![Index Page](assets/Indexpage.png)
 
 **Registration**
-![Registration](images/Registration.png)
+![Registration](assets/Registration.png)
 
 **HomePage**
-![Home Page](images/HomePage.png)
+![Home Page](assets/HomePage.png)
 
 **DonationForm**
-![Donation Form](images/DonationForm.png)
+![Donation Form](assets/DonationForm.png)
 
-🔮 Future Improvements
+**AdminPage**
+![Admin Page](assets/AdminPanel.png)
+
+**Database**
+![Database](assets/Database.png)
+
+## 🔮 Future Improvements
 
 i. Add email/SMS notifications for donor requests.
 
 ii. Implement Google Maps API for donor location tracking.
 
 iii. Mobile app integration (React Native / Flutter).
+
+## 🤝 Contributing
+Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to improve.
