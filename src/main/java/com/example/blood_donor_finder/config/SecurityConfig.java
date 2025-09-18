@@ -1,44 +1,53 @@
 package com.example.blood_donor_finder.config;
 
 import com.example.blood_donor_finder.security.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.authorization.SingleResultAuthorizationManager.permitAll;
-
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
-    private final CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService){
-        this.customUserDetailsService = customUserDetailsService;
+    private final CustomUserDetailsService userDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService userDetailsService){
+        this.userDetailsService = userDetailsService;
     }
+
     @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http)throws Exception{
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf-> csrf.disable())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/home.html", "/donation_form.html").hasRole("USER")
-                        .requestMatchers("/login", "/login.html", "/index.html", "/register.html","/images/**", "/api/auth/register", "/css/**", "/js/**")
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/home.html", "/donation_form.html").hasAuthority("ROLE_USER")
+                        .requestMatchers("/login", "/login.html", "/register.html",
+                                "/images/**", "/css/**", "/js/**", "/api/auth/register")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login.html")
                         .loginProcessingUrl("/login")
-                        .usernameParameter("username")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
                         .successHandler((request, response, authentication) -> {
                             boolean isAdmin = authentication.getAuthorities().stream()
                                     .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
@@ -48,16 +57,11 @@ public class SecurityConfig {
                                 response.sendRedirect("/home.html");
                             }
                         })
-                        
-                        .failureUrl("/login?error=true")
+                        .failureUrl("/login.html?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout.permitAll());
+
         return http.build();
     }
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
 }

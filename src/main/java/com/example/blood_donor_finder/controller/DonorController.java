@@ -1,5 +1,6 @@
 package com.example.blood_donor_finder.controller;
 
+import ch.qos.logback.core.model.Model;
 import com.example.blood_donor_finder.dto.DonorFormDTO;
 import com.example.blood_donor_finder.dto.DonorResponse;
 import com.example.blood_donor_finder.entity.Donor;
@@ -13,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -117,6 +120,5 @@ public class DonorController {
         donorService.updateProfile(email, dto);
         return ResponseEntity.ok().build();
     }
-
 
 }

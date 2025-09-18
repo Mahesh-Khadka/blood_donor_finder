@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*")
@@ -19,8 +21,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody UserRegisterDTO userRegisterDTO){
-        userService.registerUser(userRegisterDTO);
-        return ResponseEntity.status(201).body("Registration Successful");
+    public ResponseEntity<Map<String, String>> register(@Valid @RequestBody UserRegisterDTO userRegisterDTO){
+        return userService.registerUser(userRegisterDTO);
     }
 }
